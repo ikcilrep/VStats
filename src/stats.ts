@@ -1,21 +1,21 @@
 import { TextDocument } from "vscode";
 
 interface Statistics {
-    lines: number;
-    chars: number;
-    numberOfFiles: number;
+    linesOfCode: number;
+    characterCount: number;
+    fileCount: number;
     createdAt: number;
-    languageId: string;
+    language: string;
 }
 
 function statisticsFromDocuments(documents: readonly TextDocument[]): Statistics {
     const texts = documents.map(document => document.getText());
     return {
-        "lines": countLines(),
-        "chars": countChars(),
-        "numberOfFiles": documents.length,
+        "linesOfCode": countLines(),
+        "characterCount": countChars(),
+        "fileCount": documents.length,
         "createdAt": Date.now(),
-        "languageId": documents[0].languageId
+        "language": documents[0].languageId
     };
 
     function countLines(): number {
