@@ -14,7 +14,7 @@ export class VStatsPanel implements vscode.TreeDataProvider<Tab> {
   getChildren(element?: Tab): Thenable<Tab[]> {
     return Promise.resolve([
       new Tab("Local Stats","LocalPanel", "", "My statistics"),
-      new Tab("Leaderboards","", "", ""),
+      new Tab("Leaderboards", "extension.login"),
       new Tab("Log In","extension.login","","","login.svg"),
     ]);
   }
