@@ -23,7 +23,7 @@ const updateStatistics = (context: vscode.ExtensionContext) => (documents: reado
     });
 }
 
-/* async function fetchStatistics(context: vscode.ExtensionContext) {
+async function fetchStatistics(context: vscode.ExtensionContext) {
     const token = context.globalState.get('token');
 
     const projectId = await getProjectId(context);
@@ -32,7 +32,8 @@ const updateStatistics = (context: vscode.ExtensionContext) => (documents: reado
         headers: { Authorization: `Bearer ${token}` },
         params: { projectId }
     };
-    return await (await axios.get("https://https://vstatsapi.cubepotato.eu/stats", config)).data;
-}; */
+    const response = await axios.get("https://https://vstatsapi.cubepotato.eu/stats", config);
+    return response.data;
+};
 
-export { updateStatistics/*, fetchStatistics*/ };
+export { updateStatistics, fetchStatistics };
