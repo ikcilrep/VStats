@@ -24,6 +24,10 @@
       {
         "command": "vstats.showGUI",
         "title": "showGUI"
+      },
+      {
+        "command": "RefreshTabs",
+        "title": "Refresh"
       }
     ],
     "views": {

@@ -7,6 +7,8 @@ import { VStatsPanel } from "./utils/VStatsPanel";
 import { LeaderBoardsPanel } from "./panels/leaderboardsPanel";
 
 export function activate(context: vscode.ExtensionContext) {
+  const VStatsPanelprovider = new VStatsPanel();
+
   const postStatistics = vscode.workspace.onDidSaveTextDocument(() =>
     groupByLanguage(vscode.workspace.textDocuments).forEach(updateStatistics(context))
   );
@@ -33,12 +35,17 @@ export function activate(context: vscode.ExtensionContext) {
     LeaderBoardsPanel.render(context.extensionUri);
   });
 
+
+  vscode.commands.registerCommand('RefreshTabs', () =>
+    VStatsPanelprovider.refresh()
+  );
+
   context.subscriptions.push(showGUI);
 
   let root = vscode.workspace.rootPath
   if (root) {
     vscode.window.createTreeView('VStats', {
-      treeDataProvider: new VStatsPanel(root)
+      treeDataProvider: VStatsPanelprovider
     });
   }
 }
