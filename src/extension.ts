@@ -8,13 +8,16 @@ import { VStatsPanel } from "./utils/VStatsPanel";
 
 export function activate(context: vscode.ExtensionContext) {
   const token = "temporaryToken";
-  const postStatistics = vscode.workspace.onDidSaveTextDocument((document) => {
-    groupByLanguage(vscode.workspace.textDocuments).forEach((documents, language) => {
-      const statistics = statisticsFromDocuments(documents);
-      const config: AxiosRequestConfig = { headers: { Authorization: `Bearer ${token}` } };
-      axios.post("https://vstatsapi.cubepotato.eu/stats", statistics, config);
-    });
-  });
+
+  function updateStatistics(documents: readonly vscode.TextDocument[]) {
+    const statistics = statisticsFromDocuments(documents);
+    const config: AxiosRequestConfig = { headers: { Authorization: `Bearer ${token}` } };
+    axios.post("https://vstatsapi.cubepotato.eu/stats", statistics, config);
+  }
+
+  const postStatistics = vscode.workspace.onDidSaveTextDocument(() =>
+    groupByLanguage(vscode.workspace.textDocuments).forEach(updateStatistics)
+  );
 
   context.subscriptions.push(postStatistics);
   /*
