@@ -4,6 +4,7 @@ import { groupByLanguage } from "./languages";
 import { IndexPanel } from "./panels/indexPanel";
 import "./stats";
 import { VStatsPanel } from "./utils/VStatsPanel";
+import { LeaderBoardsPanel } from "./panels/leaderboardsPanel";
 
 export function activate(context: vscode.ExtensionContext) {
   const postStatistics = vscode.workspace.onDidSaveTextDocument(() =>
@@ -26,6 +27,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   const showGUI = vscode.commands.registerCommand("vstats.showGUI", () => {
     IndexPanel.render(context.extensionUri);
+  });
+
+  vscode.commands.registerCommand("LeaderboardsPanel",() => {
+    LeaderBoardsPanel.render(context.extensionUri);
   });
 
   context.subscriptions.push(showGUI);

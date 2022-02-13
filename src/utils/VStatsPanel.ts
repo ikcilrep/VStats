@@ -13,12 +13,11 @@ export class VStatsPanel implements vscode.TreeDataProvider<Tab> {
 
   getChildren(element?: Tab): Thenable<Tab[]> {
     return Promise.resolve([
-      new Tab("Local Stats","LocalPanel", "", "My statistics"),
-      new Tab("Log In","extension.login"),
+      new Tab("Local Stats","vstats.showGUI", "", "My statistics"),
+      new Tab("Leaderboards", "LeaderboardsPanel"),
+      new Tab("Log In","extension.login","","","login.svg"),
     ]);
   }
-
-
 }
 
 class Tab extends vscode.TreeItem {
@@ -27,17 +26,17 @@ class Tab extends vscode.TreeItem {
     public readonly commandName: string,
     public readonly description: string = "",
     public readonly tooltip: string = "",
-    public readonly iconPath = {
-      light: path.join(__filename, '..', '..', '..', 'resources','light', 'tabIcon.svg'),
-      dark: path.join(__filename, '..', '..', '..', 'resources','dark', 'tabIcon.svg')
-    }
+    public readonly iconName: string = "tabIcon.svg",
   ) {
     super(name);
     this.tooltip = `${this.label}`;
     //this.iconPath = iconPath;
     this.description = description;
     this.command = {title:"TabCommand",command:commandName}
-
+    this.iconPath = {
+      light: path.join(__filename, '..', '..', '..', 'resources','light', this.iconName),
+      dark: path.join(__filename, '..', '..', '..', 'resources','dark', this.iconName)
+    }
     
   }
 }
