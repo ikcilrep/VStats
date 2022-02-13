@@ -11,11 +11,13 @@ export function activate(context: vscode.ExtensionContext) {
 
   let button = vscode.window.createStatusBarItem();
   button.text = "$(notebook-state-success) VSCS";
-  button.tooltip = "Collecting data...";
-  button.command = "vsstats.openGUI";
   button.show();
 
-  // IndexPanel.render(context.extensionUri); / zeby odpalic gui
+  const showGUI = vscode.commands.registerCommand("vstats.showGUI", () => {
+    IndexPanel.render(context.extensionUri);
+  });
+
+  context.subscriptions.push(showGUI);
 }
 
 export function deactivate() {}
