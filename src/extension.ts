@@ -39,6 +39,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(showGUI);
 
+  vscode.commands.registerCommand("LocalPanel",() => {
+    IndexPanel.render(context.extensionUri); // zeby odpalic gui
+  })
+
   let root = vscode.workspace.rootPath
   if (root) {
     vscode.window.createTreeView('VStats', {
