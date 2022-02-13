@@ -15,12 +15,34 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
+  "commands": [
       {
         "command": "vstats.showGUI",
         "title": "showGUI"
       }
-    ]
+    ],
+    "views": {
+      "VStatsBar": [
+        {
+          "id": "VStats",
+          "name": "VStats",
+          "icon": "media/icon.svg",
+          "contextualTitle": "Stats"
+        }
+      ]
+    },
+    "activationEvents": [
+      "onView:VStats"
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "VStatsBar",
+          "title": "VStats",
+          "icon": "media/icon.svg"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -44,6 +66,7 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@vscode/webview-ui-toolkit": "^0.9.1"
+    "@vscode/webview-ui-toolkit": "^0.9.1",
+    "axios": "^0.26.0"
   }
 }
