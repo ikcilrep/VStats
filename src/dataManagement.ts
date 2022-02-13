@@ -50,4 +50,11 @@ async function fetchStatistics(context: vscode.ExtensionContext): Promise<Statis
     return response.data.map((data: any) => dataToStatistics(data));
 };
 
-export { updateStatistics, fetchStatistics };
+async function fetchTopLanguageStatistics(context: vscode.ExtensionContext, limit: number, language: string): Promise<Statistics[]> {
+    const config = {params: {language, limit}};
+    const response = await axios.get('https://vstatsapi.cubepotato.eu/stats', config);
+
+    return response.data.map((data: any) => dataToStatistics(data));
+}
+
+export { updateStatistics, fetchStatistics, fetchTopLanguageStatistics };
