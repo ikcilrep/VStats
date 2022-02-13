@@ -6,16 +6,18 @@ interface Statistics {
     fileCount: number;
     createdAt: number;
     language: string;
+    projectId: string;
 }
 
-function statisticsFromDocuments(documents: readonly TextDocument[]): Statistics {
+function statisticsFromDocuments(documents: readonly TextDocument[], projectId: string): Statistics {
     const texts = documents.map(document => document.getText());
     return {
         "linesOfCode": countLines(),
         "characterCount": countChars(),
         "fileCount": documents.length,
         "createdAt": Date.now(),
-        "language": documents[0].languageId
+        "language": documents[0].languageId,
+        "projectId": projectId
     };
 
     function countLines(): number {
