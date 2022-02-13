@@ -1,4 +1,4 @@
-import { statisticsFromDocuments } from "./stats";
+import { Statistics, statisticsFromDocuments } from "./stats";
 import * as vscode from "vscode";
 import axios, { AxiosRequestConfig } from "axios";
 
@@ -10,6 +10,7 @@ async function getProjectId(context: vscode.ExtensionContext): Promise<string> {
         return context.workspaceState.get("projectId") as string;
     else {
         const response = await axios.post("https://vstatsapi.cubepotato.eu/stats/project", undefined, config);
+        context.workspaceState.update("projectId", response.data["id"]);
         return response.data["id"];
     }
 }
@@ -23,7 +24,18 @@ const updateStatistics = (context: vscode.ExtensionContext) => (documents: reado
     });
 }
 
-async function fetchStatistics(context: vscode.ExtensionContext) {
+function dataToStatistics(data: any): Statistics {
+    return {
+        characterCount: data["characterCount"],
+        createdAt: data["createdAt"],
+        fileCount: data["fileCount"],
+        language: data["language"],
+        linesOfCode: data["linesOfCode"],
+        projectId: data["projectID"]
+    };
+}
+
+async function fetchStatistics(context: vscode.ExtensionContext): Promise<Statistics[]> {
     const token = context.globalState.get('token');
 
     const projectId = await getProjectId(context);
@@ -32,8 +44,9 @@ async function fetchStatistics(context: vscode.ExtensionContext) {
         headers: { Authorization: `Bearer ${token}` },
         params: { projectId }
     };
-    const response = await axios.get("https://https://vstatsapi.cubepotato.eu/stats", config);
-    return response.data;
+
+    const response = await axios.get("https://vstatsapi.cubepotato.eu/stats", config);
+    return response.data.map((data: any) => dataToStatistics(data));
 };
 
 export { updateStatistics, fetchStatistics };
