@@ -5,13 +5,16 @@ import * as path from 'path';
 export class VStatsPanel implements vscode.TreeDataProvider<Tab> {
   constructor(private workspaceRoot: string) {}
 
+  
+
   getTreeItem(element: Tab): vscode.TreeItem {
     return element;
   }
 
   getChildren(element?: Tab): Thenable<Tab[]> {
     return Promise.resolve([
-      new Tab("Tab","TestPanel", "A Tab", "Tab tab; click it"),
+      new Tab("Local Stats","LocalPanel", "", "My statistics"),
+      new Tab("Log In","extension.login"),
     ]);
   }
 
@@ -33,6 +36,8 @@ class Tab extends vscode.TreeItem {
     this.tooltip = `${this.label}`;
     //this.iconPath = iconPath;
     this.description = description;
-    this.command = {title:"TabCommant",command:commandName}
+    this.command = {title:"TabCommand",command:commandName}
+
+    
   }
 }
