@@ -1,3 +1,4 @@
+import axios, { AxiosRequestConfig } from "axios";
 import * as vscode from "vscode";
 import { groupByLanguage } from "./languages";
 import "./stats";
@@ -5,9 +6,12 @@ import { statisticsFromDocuments } from "./stats";
 import { VStatsPanel } from "./utils/VStatsPanel";
 
 export function activate(context: vscode.ExtensionContext) {
+  const token = "temporaryToken";
   const postStatistics = vscode.workspace.onDidSaveTextDocument((document) => {
     groupByLanguage(vscode.workspace.textDocuments).forEach((documents, language) => {
       const statistics = statisticsFromDocuments(documents);
+      const config: AxiosRequestConfig = { headers: { Authorization: `Bearer ${token}` } };
+      axios.post("https://vstatsapi.cubepotato.eu/stats", statistics, config);
     });
   });
 
@@ -28,11 +32,11 @@ export function activate(context: vscode.ExtensionContext) {
   // IndexPanel.render(context.extensionUri); / zeby odpalic gui
 
   let root = vscode.workspace.rootPath
-  if(root){
+  if (root) {
     vscode.window.createTreeView('VStats', {
       treeDataProvider: new VStatsPanel(root)
     });
   }
 }
 
-export function deactivate() {}
+export function deactivate() { }
