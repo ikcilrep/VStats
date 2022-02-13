@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export class VStatsPanel implements vscode.TreeDataProvider<Tab> {
-  constructor(private workspaceRoot: string) {}
+  constructor() {}
 
   
 
@@ -16,7 +16,15 @@ export class VStatsPanel implements vscode.TreeDataProvider<Tab> {
       new Tab("Local Stats","vstats.showGUI", "", "My statistics"),
       new Tab("Leaderboards", "LeaderboardsPanel"),
       new Tab("Log In","extension.login","","","login.svg"),
+      new Tab("Log Out","extension.logout","","","logout.svg"),
     ]);
+  }
+
+  private _onDidChangeTreeData: vscode.EventEmitter<Tab | undefined | null | void> = new vscode.EventEmitter<Tab | undefined | null | void>();
+  readonly onDidChangeTreeData: vscode.Event<Tab | undefined | null | void> = this._onDidChangeTreeData.event;
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
   }
 }
 
