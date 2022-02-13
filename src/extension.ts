@@ -1,11 +1,14 @@
 import * as vscode from "vscode";
+import { groupByLanguage } from "./languages";
 import "./stats";
 import { statisticsFromDocuments } from "./stats";
 
 
 export function activate(context: vscode.ExtensionContext) {
   const postStatistics = vscode.workspace.onDidSaveTextDocument((document) => {
-    let statistics = statisticsFromDocuments(vscode.workspace.textDocuments)
+    groupByLanguage(vscode.workspace.textDocuments).forEach((documents, language) => {
+      const statistics = statisticsFromDocuments(documents);
+    });
   });
 
   context.subscriptions.push(postStatistics);
