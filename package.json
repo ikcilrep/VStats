@@ -14,7 +14,29 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": []
+    "commands": [],
+    "views": {
+      "VStatsBar": [
+        {
+          "id": "VStats",
+          "name": "VStats",
+          "icon": "media/icon.svg",
+          "contextualTitle": "Stats"
+        }
+      ]
+    },
+    "activationEvents": [
+      "onView:VStats"
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "VStatsBar",
+          "title": "VStats",
+          "icon": "media/icon.svg"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

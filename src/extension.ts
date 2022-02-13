@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import "./stats";
 import { statisticsFromDocuments } from "./stats";
+import { VStatsPanel } from "./utils/VStatsPanel";
 
 export function activate(context: vscode.ExtensionContext) {
   const postStatistics = vscode.workspace.onDidSaveTextDocument((document) => {
@@ -22,6 +23,13 @@ export function activate(context: vscode.ExtensionContext) {
   button.show();
 
   // IndexPanel.render(context.extensionUri); / zeby odpalic gui
+
+  let root = vscode.workspace.rootPath
+  if(root){
+    vscode.window.createTreeView('VStats', {
+      treeDataProvider: new VStatsPanel(root)
+    });
+  }
 }
 
 export function deactivate() {}
