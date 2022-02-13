@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "*",
+    "onCommand:vstats.showGUI"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -19,6 +20,10 @@
         "command": "extension.login",
         "title": "Login",
         "category": "VStats"
+      },
+      {
+        "command": "vstats.showGUI",
+        "title": "showGUI"
       }
     ],
     "views": {
@@ -66,7 +71,6 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@octokit/rest": "^18.12.0",
     "@vscode/webview-ui-toolkit": "^0.9.1",
     "axios": "^0.26.0"
   }

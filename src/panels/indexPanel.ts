@@ -65,11 +65,50 @@ export class IndexPanel {
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <script type="module" src="${toolkitUri}"></script>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
               <title>Hello World!</title>
             </head>
             <body>
-              <h1>Hello World!</h1>
-              <vscode-button id="howdy">Howdy!</vscode-button>
+              <header>
+                <h1>VStats</h1>
+              </header>
+              <section>
+                <div>
+                  <canvas id="myChart"></canvas>
+                </div>
+              </section>
+              <script>
+                //chart.js dla wykresów
+                const labels = [
+                  'January',
+                  'February',
+                  'March',
+                  'April',
+                  'May',
+                  'June',
+                ];
+              
+                const data = {
+                  labels: labels,
+                  datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [0, 10, 5, 2, 20, 30, 45],
+                  }]
+                };
+              
+                const config = {
+                  type: 'line',
+                  data: data,
+                  options: {}
+                };
+
+                const myChart = new Chart(
+                  document.getElementById('myChart'),
+                  config
+                );
+                </script>
             </body>
           </html>
         `;
