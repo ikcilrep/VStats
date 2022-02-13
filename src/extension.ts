@@ -1,13 +1,38 @@
 import * as vscode from "vscode";
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log('Congratulations, your extension "vsstats" is now active!');
+  let openWebView = vscode.commands.registerCommand(
+    "vsstats.helloWorld",
+    () => {
+      const panel = vscode.window.createWebviewPanel(
+        "testView",
+        "Test View",
+        vscode.ViewColumn.One,
+        {
+          enableScripts: true,
+        }
+      );
 
-  let disposable = vscode.commands.registerCommand("vsstats.helloWorld", () => {
-    vscode.window.showInformationMessage("Hello World from vsstats!");
-  });
+      panel.webview.html = getWebviewContent();
+    }
+  );
 
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(openWebView);
+
+  function getWebviewContent() {
+    return `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <title>Example Webview</title>
+  </head>
+  <body>
+	 <h1>This works!</h1>
+	  //Add some custom HTML here
+  </body>
+  </html>`;
+  }
 }
 
 export function deactivate() {}
