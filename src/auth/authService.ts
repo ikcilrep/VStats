@@ -1,13 +1,11 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../const';
 import * as vscode from 'vscode';
+import { User } from './user';
 
 interface LoginRes {
     token: string;
-    user: {
-        login: string;
-        name: string;
-    }
+    user: User;
 }
 
 export async function finalizeLogin(context: vscode.ExtensionContext, code: string) {
@@ -20,4 +18,4 @@ export async function finalizeLogin(context: vscode.ExtensionContext, code: stri
     vscode.window.showInformationMessage(`Logged in as ${data.user.name} (${data.user.login})`);
     context.globalState.update('token', data.token);
     context.globalState.update('user', data.user);
-} 
+}
