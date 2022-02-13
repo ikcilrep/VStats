@@ -1,22 +1,13 @@
-import axios, { AxiosRequestConfig } from "axios";
 import * as vscode from "vscode";
-import { login } from "./auth/authCommand";
+import { updateStatistics } from "./dataManagement";
 import { groupByLanguage } from "./languages";
 import { IndexPanel } from "./panels/indexPanel";
 import "./stats";
-import { statisticsFromDocuments } from "./stats";
 import { VStatsPanel } from "./utils/VStatsPanel";
 
 export function activate(context: vscode.ExtensionContext) {
-
-  function updateStatistics(documents: readonly vscode.TextDocument[]) {
-    const statistics = statisticsFromDocuments(documents);
-    const config: AxiosRequestConfig = { headers: { Authorization: `Bearer ${context.globalState.get('token')}` } };
-    axios.post("https://vstatsapi.cubepotato.eu/stats", statistics, config);
-  }
-
   const postStatistics = vscode.workspace.onDidSaveTextDocument(() =>
-    groupByLanguage(vscode.workspace.textDocuments).forEach(updateStatistics)
+    groupByLanguage(vscode.workspace.textDocuments).forEach(updateStatistics(context))
   );
 
   context.subscriptions.push(postStatistics);
@@ -39,20 +30,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(showGUI);
 
-  vscode.commands.registerCommand("LocalPanel",() => {
-    IndexPanel.render(context.extensionUri); // zeby odpalic gui
-  })
-
   let root = vscode.workspace.rootPath
   if (root) {
     vscode.window.createTreeView('VStats', {
       treeDataProvider: new VStatsPanel(root)
     });
   }
-
-  const disposable = vscode.commands.registerCommand('extension.login', login(context));
-	context.subscriptions.push(disposable);
-
 }
 
 export function deactivate() { }

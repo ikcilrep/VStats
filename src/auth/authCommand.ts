@@ -16,6 +16,7 @@ export const login = (context: vscode.ExtensionContext) => async () => {
 
     if(!res) {
         vscode.window.showErrorMessage('Login cancelled.');
+        return;
     }
 
     await finalizeLogin(context, res!);
