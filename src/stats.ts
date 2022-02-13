@@ -1,4 +1,5 @@
 import { TextDocument } from "vscode";
+import { User } from "./auth/user";
 
 interface Statistics {
     linesOfCode: number;
@@ -7,6 +8,7 @@ interface Statistics {
     createdAt: string;
     language: string;
     projectId: string;
+    user?: User;
 }
 
 function statisticsFromDocuments(documents: readonly TextDocument[], projectId: string): Statistics {

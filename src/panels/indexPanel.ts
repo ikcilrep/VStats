@@ -1,10 +1,12 @@
 import * as vscode from "vscode";
+import { Statistics } from "../stats";
 import { getUri } from "../utils/getUri";
 
 export class IndexPanel {
   public static currentPanel: IndexPanel | undefined;
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
+  private data?: {[key: string]: Statistics[]};
 
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     this._panel = panel;
@@ -58,6 +60,8 @@ export class IndexPanel {
       "toolkit.js",
     ]);
 
+    
+
     return /*html*/ `
           <!DOCTYPE html>
           <html lang="en">
@@ -71,37 +75,30 @@ export class IndexPanel {
             <body>
               <header>
                 <h1>VStats</h1>
+            
               </header>
               <section>
                 <div>
                   <canvas id="myChart"></canvas>
                 </div>
               </section>
-              <script>
-                //chart.js dla wykresów
-                const labels = [
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                  'May',
-                  'June',
-                ];
-              
+              <script>              
                 const data = {
                   labels: labels,
                   datasets: [{
-                    label: 'My First dataset',
+                    label: 'Lines of code',
                     backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45],
+                    data: ${JSON.stringify(this.data?.['python'].map(x => x.linesOfCode) || [1, 2, 3])},
                   }]
                 };
               
                 const config = {
                   type: 'line',
                   data: data,
-                  options: {}
+                  options: {
+                    
+                  }
                 };
 
                 const myChart = new Chart(
