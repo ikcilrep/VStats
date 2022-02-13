@@ -10,11 +10,17 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "*",
+    "onCommand:vstats.showGUI"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [],
+  "commands": [
+      {
+        "command": "vstats.showGUI",
+        "title": "showGUI"
+      }
+    ],
     "views": {
       "VStatsBar": [
         {

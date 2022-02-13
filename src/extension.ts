@@ -29,7 +29,11 @@ export function activate(context: vscode.ExtensionContext) {
   button.tooltip = "Collecting data...";
   button.show();
 
-  // IndexPanel.render(context.extensionUri); / zeby odpalic gui
+  const showGUI = vscode.commands.registerCommand("vstats.showGUI", () => {
+    IndexPanel.render(context.extensionUri);
+  });
+
+  context.subscriptions.push(showGUI);
 
   let root = vscode.workspace.rootPath
   if (root) {
