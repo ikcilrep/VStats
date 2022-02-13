@@ -51,7 +51,8 @@ async function fetchStatistics(context: vscode.ExtensionContext): Promise<Statis
 };
 
 async function fetchTopLanguageStatistics(context: vscode.ExtensionContext, limit: number, language: string): Promise<Statistics[]> {
-    const config = {params: {language, limit}};
+    const token = context.globalState.get('token');
+    const config = { params: { language, limit }, headers: { Authorization: `Bearer ${token}` } };
     const response = await axios.get('https://vstatsapi.cubepotato.eu/stats', config);
 
     return response.data.map((data: any) => dataToStatistics(data));
