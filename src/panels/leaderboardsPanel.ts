@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { getUri } from "../utils/getUri";
-import { fetchStatistics } from "../dataManagement"
+import { fetchTopLanguageStatistics } from "../dataManagement"
 import internal = require("stream");
 
 export class LeaderBoardsPanel {
@@ -8,16 +8,17 @@ export class LeaderBoardsPanel {
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
 
-  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
+  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
     this._panel = panel;
     this._panel.onDidDispose(this.dispose, null, this._disposables);
     this._panel.webview.html = this._getWebviewContent(
       this._panel.webview,
-      extensionUri
+      extensionUri,
+      context
     );
   }
 
-  public static render(extensionUri: vscode.Uri) {
+  public static render(extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
     if (LeaderBoardsPanel.currentPanel) {
       LeaderBoardsPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
     } else {
@@ -30,7 +31,7 @@ export class LeaderBoardsPanel {
         }
       );
 
-      LeaderBoardsPanel.currentPanel = new LeaderBoardsPanel(panel, extensionUri);
+      LeaderBoardsPanel.currentPanel = new LeaderBoardsPanel(panel, extensionUri, context);
     }
   }
 
@@ -51,7 +52,8 @@ export class LeaderBoardsPanel {
 
   private _getWebviewContent(
     webview: vscode.Webview,
-    extensionUri: vscode.Uri
+    extensionUri: vscode.Uri,
+    context: vscode.ExtensionContext
   ) {
     // Tip: Install the es6-string-html VS Code extension to enable code highlighting below
     const toolkitUri = getUri(webview, extensionUri, [
@@ -62,7 +64,7 @@ export class LeaderBoardsPanel {
       "toolkit.js",
     ]);
 
-    const languages = ["Python", "JS", "C", "Java"]
+    const languages = ["python", "javascript", "c", "java"]
 
     const languageHTML = () => {
       let html = "";
@@ -77,15 +79,6 @@ export class LeaderBoardsPanel {
     let characters = "";
     let files = "";
     let problems = "";
-    /*let topList = fetchStatistics(context).then(data => {
-      data.array.forEach(val => {
-        html += "<div>"+
-        "<h1> User: "+val.user+"</h1>"+
-        "<h1> Score: "+val.score+"</h1>"+
-        "</div>"
-      });
-    })*/
-
     /*
     linesOfCode: number;
     characterCount: number;
@@ -94,6 +87,16 @@ export class LeaderBoardsPanel {
     language: string;
     projectId: string;
     */
+
+    let topList = fetchTopLanguageStatistics(context,50,"javascript").then(data => {
+      data.forEach(val => {
+        usernames += "<h3> "+val.user+"</h3>"
+        lines += "<h3> "+val.linesOfCode+"</h3>"
+        characters += "<h3> "+val.characterCount+"</h3>"
+        files += "<h3> "+val.fileCount+"</h3>"
+        problems += "<h3> "+"no what so ever"+"</h3>"
+      })
+    })
 
     let mockList = [
       {
@@ -118,13 +121,6 @@ export class LeaderBoardsPanel {
         problems:0,
       },
     ]
-    mockList.forEach(val => {
-      usernames += "<h3> "+val.userName+"</h3>"
-      lines += "<h3> "+val.linesOfCode+"</h3>"
-      characters += "<h3> "+val.characterCount+"</h3>"
-      files += "<h3> "+val.fileCount+"</h3>"
-      problems += "<h3> "+val.problems+"</h3>"
-    })
 
     return /*html*/ `
           <!DOCTYPE html>
@@ -179,6 +175,7 @@ export class LeaderBoardsPanel {
                       ${usernames}
                     </div>
                   </div>
+                  <hr>
                   <div class="board">
                     <h2>Lines of code</h2>
                     <div id="lines-of-code">

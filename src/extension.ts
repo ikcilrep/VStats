@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   vscode.commands.registerCommand("LeaderboardsPanel",() => {
-    LeaderBoardsPanel.render(context.extensionUri);
+    LeaderBoardsPanel.render(context.extensionUri, context);
   });
 
 
