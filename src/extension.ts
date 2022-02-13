@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import * as vscode from "vscode";
+import { login } from "./auth/authCommand";
 import { groupByLanguage } from "./languages";
 import { IndexPanel } from "./panels/indexPanel";
 import "./stats";
@@ -7,11 +8,10 @@ import { statisticsFromDocuments } from "./stats";
 import { VStatsPanel } from "./utils/VStatsPanel";
 
 export function activate(context: vscode.ExtensionContext) {
-  const token = "temporaryToken";
 
   function updateStatistics(documents: readonly vscode.TextDocument[]) {
     const statistics = statisticsFromDocuments(documents);
-    const config: AxiosRequestConfig = { headers: { Authorization: `Bearer ${token}` } };
+    const config: AxiosRequestConfig = { headers: { Authorization: `Bearer ${context.globalState.get('token')}` } };
     axios.post("https://vstatsapi.cubepotato.eu/stats", statistics, config);
   }
 
@@ -49,6 +49,10 @@ export function activate(context: vscode.ExtensionContext) {
       treeDataProvider: new VStatsPanel(root)
     });
   }
+
+  const disposable = vscode.commands.registerCommand('extension.login', login(context));
+	context.subscriptions.push(disposable);
+
 }
 
 export function deactivate() { }

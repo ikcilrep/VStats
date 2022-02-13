@@ -17,6 +17,11 @@
   "contributes": {
     "commands": [
       {
+        "command": "extension.login",
+        "title": "Login",
+        "category": "VStats"
+      },
+      {
         "command": "vstats.showGUI",
         "title": "showGUI"
       }
