@@ -14,7 +14,13 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [],
+    "commands": [
+      {
+        "command": "extension.login",
+        "title": "Login",
+        "category": "VStats"
+      }
+    ],
     "views": {
       "VStatsBar": [
         {
@@ -60,6 +66,8 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@vscode/webview-ui-toolkit": "^0.9.1"
+    "@octokit/rest": "^18.12.0",
+    "@vscode/webview-ui-toolkit": "^0.9.1",
+    "axios": "^0.26.0"
   }
 }
