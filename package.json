@@ -15,7 +15,7 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-  "commands": [
+    "commands": [
       {
         "command": "vstats.showGUI",
         "title": "showGUI"
@@ -26,7 +26,7 @@
         {
           "id": "VStats",
           "name": "VStats",
-          "icon": "media/icon.svg",
+          "icon": "resources/icon.svg",
           "contextualTitle": "Stats"
         }
       ]
@@ -39,7 +39,7 @@
         {
           "id": "VStatsBar",
           "title": "VStats",
-          "icon": "media/icon.svg"
+          "icon": "resources/icon.svg"
         }
       ]
     }

@@ -20,8 +20,8 @@ export class IndexPanel {
       IndexPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
     } else {
       const panel = vscode.window.createWebviewPanel(
-        "helloworld",
-        "Hello World",
+        "VStats",
+        "VStats",
         vscode.ViewColumn.One,
         {
           enableScripts: true,
