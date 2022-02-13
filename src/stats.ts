@@ -4,7 +4,7 @@ interface Statistics {
     linesOfCode: number;
     characterCount: number;
     fileCount: number;
-    createdAt: number;
+    createdAt: string;
     language: string;
     projectId: string;
 }
@@ -15,7 +15,7 @@ function statisticsFromDocuments(documents: readonly TextDocument[], projectId: 
         "linesOfCode": countLines(),
         "characterCount": countChars(),
         "fileCount": documents.length,
-        "createdAt": Date.now(),
+        "createdAt": new Date(Date.now()).toUTCString(),
         "language": documents[0].languageId,
         "projectId": projectId
     };
