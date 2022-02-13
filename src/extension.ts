@@ -2,10 +2,9 @@ import * as vscode from "vscode";
 import "./stats";
 import { statisticsFromDocuments } from "./stats";
 
-
 export function activate(context: vscode.ExtensionContext) {
   const postStatistics = vscode.workspace.onDidSaveTextDocument((document) => {
-    let statistics = statisticsFromDocuments(vscode.workspace.textDocuments)
+    let statistics = statisticsFromDocuments(vscode.workspace.textDocuments);
   });
 
   context.subscriptions.push(postStatistics);
@@ -16,7 +15,6 @@ export function activate(context: vscode.ExtensionContext) {
       changes += 1;
     }
   );*/
-  
 
   let button = vscode.window.createStatusBarItem();
   button.text = "$(notebook-state-success) VSCS";
@@ -26,4 +24,4 @@ export function activate(context: vscode.ExtensionContext) {
   // IndexPanel.render(context.extensionUri); / zeby odpalic gui
 }
 
-export function deactivate() { }
+export function deactivate() {}
