@@ -22,6 +22,7 @@ const updateStatistics = (context: vscode.ExtensionContext) => (documents: reado
         const config: AxiosRequestConfig = { headers: { Authorization: `Bearer ${token}` } };
         axios.post("https://vstatsapi.cubepotato.eu/stats", statistics, config).catch((err) => console.log(err));
     });
+    vscode.window.setStatusBarMessage('VStats: updating...', 2000);
 }
 
 function dataToStatistics(data: any): Statistics {
