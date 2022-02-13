@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import * as vscode from "vscode";
 import { groupByLanguage } from "./languages";
+import { IndexPanel } from "./panels/indexPanel";
 import "./stats";
 import { statisticsFromDocuments } from "./stats";
 import { VStatsPanel } from "./utils/VStatsPanel";
