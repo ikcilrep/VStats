@@ -9,7 +9,7 @@ async function getProjectId(context: vscode.ExtensionContext): Promise<string> {
     if (context.workspaceState.get("projectId") !== undefined)
         return context.workspaceState.get("projectId") as string;
     else {
-        const response = await axios.get("https://vstatsapi.cubepotato.eu/stats/project", config);
+        const response = await axios.post("https://vstatsapi.cubepotato.eu/stats/project", undefined, config);
         return response.data["id"];
     }
 }
@@ -19,7 +19,7 @@ const updateStatistics = (context: vscode.ExtensionContext) => (documents: reado
     getProjectId(context).then((projectId) => {
         const statistics = statisticsFromDocuments(documents, projectId);
         const config: AxiosRequestConfig = { headers: { Authorization: `Bearer ${token}` } };
-        axios.post("https://vstatsapi.cubepotato.eu/stats", statistics, config);
+        axios.post("https://vstatsapi.cubepotato.eu/stats", statistics, config).catch((err) => console.log(err));
     });
 }
 

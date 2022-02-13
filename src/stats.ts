@@ -15,7 +15,7 @@ function statisticsFromDocuments(documents: readonly TextDocument[], projectId: 
         "linesOfCode": countLines(),
         "characterCount": countChars(),
         "fileCount": documents.length,
-        "createdAt": new Date(Date.now()).toUTCString(),
+        "createdAt": new Date(Date.now()).toJSON(),
         "language": documents[0].languageId,
         "projectId": projectId
     };
