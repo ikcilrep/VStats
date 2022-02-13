@@ -1,12 +1,14 @@
 import * as vscode from "vscode";
-import { IndexPanel } from "./panels/indexPanel";
+import "./stats";
+import { Statistics, statisticsFromDocuments } from "./stats";
+
 
 export function activate(context: vscode.ExtensionContext) {
-  const helloCommand = vscode.commands.registerCommand("vsstats.helloWorld", () => {
-    IndexPanel.render(context.extensionUri);
+  const postStatistics = vscode.workspace.onDidSaveTextDocument((document) => {
+    let statistics = statisticsFromDocuments(vscode.workspace.textDocuments)
   });
 
-  context.subscriptions.push(helloCommand);
+  context.subscriptions.push(postStatistics);
 }
 
-export function deactivate() {}
+export function deactivate() { }

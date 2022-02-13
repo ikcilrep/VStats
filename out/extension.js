@@ -2,12 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
-const indexPanel_1 = require("./panels/indexPanel");
+require("./stats");
+const stats_1 = require("./stats");
 function activate(context) {
-    const helloCommand = vscode.commands.registerCommand("vsstats.helloWorld", () => {
-        indexPanel_1.IndexPanel.render(context.extensionUri);
+    const postStatistics = vscode.workspace.onDidSaveTextDocument((document) => {
+        let statistics = (0, stats_1.statisticsFromDocuments)(vscode.workspace.textDocuments);
     });
-    context.subscriptions.push(helloCommand);
+    context.subscriptions.push(postStatistics);
 }
 exports.activate = activate;
 function deactivate() { }
