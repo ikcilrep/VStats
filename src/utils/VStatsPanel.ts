@@ -17,6 +17,7 @@ export class VStatsPanel implements vscode.TreeDataProvider<Tab> {
       new Tab("Leaderboards", "LeaderboardsPanel"),
       new Tab("Log In","extension.login","","","login.svg"),
       new Tab("Log Out","extension.logout","","","logout.svg"),
+    
     ]);
   }
 

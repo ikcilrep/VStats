@@ -14,8 +14,9 @@ export async function finalizeLogin(context: vscode.ExtensionContext, code: stri
         const res = await axios.get(API_BASE_URL + '/auth/finalize?code=' + code);
         data = res.data;
     } catch(err) {
-        vscode.window.showErrorMessage('Something went wrong with loggin in...');
+        vscode.window.showErrorMessage('Something went wrong while loggin in...');
         console.error(err);
+        // console.error(err?.response?.data);
         return;
     }
 

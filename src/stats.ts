@@ -1,12 +1,14 @@
 import { TextDocument } from "vscode";
+import { User } from "./auth/user";
 
 interface Statistics {
     linesOfCode: number;
     characterCount: number;
     fileCount: number;
-    createdAt: number;
+    createdAt: string;
     language: string;
     projectId: string;
+    user?: User;
 }
 
 function statisticsFromDocuments(documents: readonly TextDocument[], projectId: string): Statistics {
@@ -15,7 +17,7 @@ function statisticsFromDocuments(documents: readonly TextDocument[], projectId: 
         "linesOfCode": countLines(),
         "characterCount": countChars(),
         "fileCount": documents.length,
-        "createdAt": Date.now(),
+        "createdAt": new Date(Date.now()).toJSON(),
         "language": documents[0].languageId,
         "projectId": projectId
     };

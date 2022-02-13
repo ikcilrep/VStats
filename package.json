@@ -22,6 +22,11 @@
         "category": "VStats"
       },
       {
+        "command": "extension.logout",
+        "title": "Logout",
+        "category": "VStats"
+      },
+      {
         "command": "vstats.showGUI",
         "title": "showGUI"
       },
