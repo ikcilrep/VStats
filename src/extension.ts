@@ -5,6 +5,8 @@ import { IndexPanel } from "./panels/indexPanel";
 import "./stats";
 import { VStatsPanel } from "./utils/VStatsPanel";
 import { LeaderBoardsPanel } from "./panels/leaderboardsPanel";
+import { login } from "./auth/authCommand";
+import { logout } from "./auth/logoutCommand";
 
 export function activate(context: vscode.ExtensionContext) {
   const VStatsPanelprovider = new VStatsPanel();
@@ -39,6 +41,12 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand('RefreshTabs', () =>
     VStatsPanelprovider.refresh()
   );
+
+  const loginC = vscode.commands.registerCommand('extension.login', login(context));
+  const logoutC = vscode.commands.registerCommand('extension.logout', logout(context));
+  context.subscriptions.push(loginC);
+  context.subscriptions.push(logoutC);
+
 
   context.subscriptions.push(showGUI);
 
