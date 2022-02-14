@@ -7,15 +7,18 @@ export class LeaderBoardsPanel {
   public static currentPanel: LeaderBoardsPanel | undefined;
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
+  private seletedLanguage: string = "plaintext";
 
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
     this._panel = panel;
     this._panel.onDidDispose(this.dispose, null, this._disposables);
-    this._panel.webview.html = this._getWebviewContent(
+    this._getWebviewContent(
       this._panel.webview,
       extensionUri,
       context
-    );
+    ).then(s => {
+      this._panel.webview.html = s;
+    });
   }
 
   public static render(extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
@@ -50,11 +53,11 @@ export class LeaderBoardsPanel {
 
   
 
-  private _getWebviewContent(
+  private async _getWebviewContent(
     webview: vscode.Webview,
     extensionUri: vscode.Uri,
     context: vscode.ExtensionContext
-  ) {
+  ) : Promise<string> {
     // Tip: Install the es6-string-html VS Code extension to enable code highlighting below
     const toolkitUri = getUri(webview, extensionUri, [
       "node_modules",
@@ -64,65 +67,31 @@ export class LeaderBoardsPanel {
       "toolkit.js",
     ]);
 
-    const languages = ["python", "javascript", "c", "java"]
-
-    const languageHTML = () => {
-      let html = "";
-      languages.forEach(lang => {
-        html += "<vscode-option>" + lang + "</vscode-option>"
-      })
-      return html
-    }
-
     let usernames = "";
     let lines = "";
     let characters = "";
     let files = "";
     let problems = "";
-    /*
-    linesOfCode: number;
-    characterCount: number;
-    fileCount: number;
-    createdAt: number;
-    language: string;
-    projectId: string;
-    */
+    let languageHTML="";
 
-    let topList = fetchTopLanguageStatistics(context,50,"javascript").then(data => {
-      data.forEach(val => {
+    return vscode.languages.getLanguages().then(val => {
+      this.seletedLanguage=val[0];
+      val.forEach(lang => {
+        languageHTML += "<vscode-option>" + lang + "</vscode-option>"
+      })
+    }).then(() => {
+
+    return fetchTopLanguageStatistics(context,50,this.seletedLanguage).then(data => {
+      data.sort().forEach(val => {
         usernames += "<h3> "+val.user+"</h3>"
         lines += "<h3> "+val.linesOfCode+"</h3>"
         characters += "<h3> "+val.characterCount+"</h3>"
         files += "<h3> "+val.fileCount+"</h3>"
         problems += "<h3> "+"no what so ever"+"</h3>"
       })
-    })
-
-    let mockList = [
-      {
-        userName:"test1",
-        linesOfCode:2137,
-        characterCount:909,
-        fileCount:69,
-        problems:0,
-      },
-      {
-        userName:"test2",
-        linesOfCode:2137,
-        characterCount:909,
-        fileCount:69,
-        problems:0,
-      },
-      {
-        userName:"test3",
-        linesOfCode:2137,
-        characterCount:909,
-        fileCount:69,
-        problems:0,
-      },
-    ]
-
-    return /*html*/ `
+      console.log(data)
+    }).then( ()=>{
+    return `
           <!DOCTYPE html>
           <html lang="en">
             <head>
@@ -164,8 +133,8 @@ export class LeaderBoardsPanel {
             <body>
               <div class="center">
                 <h1>Leaderboards</h1>
-                <vscode-dropdown class="language-selector">
-                  ${languageHTML()}
+                <vscode-dropdown class="language-selector" id="language-selector" >
+                  ${languageHTML}
                 </vscode-dropdown>
 
                 <div class="leaderboards">
@@ -202,6 +171,6 @@ export class LeaderBoardsPanel {
               </div>
             </body>
           </html>
-        `;
+        `})})
   }
 }
